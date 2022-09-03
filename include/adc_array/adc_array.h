@@ -1,7 +1,6 @@
 #pragma once
 
 #include <bitset>
-#include <iostream>
 #include <vector>
 
 template<std::size_t ResolutionInNumberOfBits = 12, std::size_t NumberOfElements = 512>
