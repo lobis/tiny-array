@@ -66,4 +66,9 @@ TEST(ADCArray, Bytes) {
     for (size_t i = 0; i < size; i++) {
         EXPECT_EQ(arrayFromBytes.at(i), data.at(i));
     }
+
+    // Check operator == works
+    EXPECT_EQ(array, arrayFromBytes);
+    const auto arrayEmpty = ADCArray<resolution, size>();
+    EXPECT_TRUE(array != arrayEmpty);
 }

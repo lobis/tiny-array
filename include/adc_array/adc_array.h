@@ -50,6 +50,14 @@ public:
         }
     }
 
+    bool operator==(const ADCArray& rhs) const {
+        return data == rhs.data;
+    }
+
+    bool operator!=(const ADCArray& rhs) const {
+        return !(*this == rhs);
+    }
+
     // Serialization
     using byte = unsigned char;
     inline std::array<byte, sizeof(data)> ToBytes() const {
