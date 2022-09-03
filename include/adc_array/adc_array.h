@@ -27,6 +27,14 @@ public:
         return result;
     }
 
+    inline std::vector<unsigned int> GetValues() const {
+        std::vector<unsigned int> result;
+        for (size_t i = 0; i < size(); i++) {
+            result.push_back(Get(i));
+        }
+        return result;
+    }
+
     inline void Insert(size_t position, unsigned int value) {
         assert(position < size());
         assert(value <= GetRange().second);
