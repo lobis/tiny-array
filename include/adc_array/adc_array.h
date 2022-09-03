@@ -9,7 +9,9 @@ private:
     std::bitset<ResolutionInNumberOfBits * NumberOfElements> data;
 
 public:
-    inline constexpr std::size_t size() const { return NumberOfElements; }
+    ADCArray() = default;
+
+    inline constexpr static std::size_t size() { return NumberOfElements; }
 
     inline constexpr static std::pair<std::size_t, std::size_t> GetRange() {
         unsigned int max = 1;
@@ -46,6 +48,33 @@ public:
         for (size_t i = 0; i < ResolutionInNumberOfBits; i++) {
             data[position * ResolutionInNumberOfBits + i] = value % 2;
             value /= 2;
+        }
+    }
+
+    // Serialization
+    using byte = unsigned char;
+    inline std::array<byte, sizeof(data)> ToBytes() const {
+        std::array<byte, sizeof(data)> bytes;
+
+        const byte* begin = reinterpret_cast<const byte*>(std::addressof(data));
+        std::copy(begin, begin + sizeof(data), std::begin(bytes));
+
+        return bytes;
+    }
+
+    ADCArray<ResolutionInNumberOfBits, NumberOfElements> static FromBytes(const std::array<byte, sizeof(data)>& bytes) {
+        auto array = ADCArray<ResolutionInNumberOfBits, NumberOfElements>();
+
+        byte* begin = reinterpret_cast<byte*>(std::addressof(array.data));
+        std::copy(std::begin(bytes), std::end(bytes), begin);
+
+        return array;
+    }
+
+    // Other constructors
+    ADCArray(const std::array<unsigned int, size()>& values) {
+        for (size_t i = 0; i < values.size(); i++) {
+            Insert(i, values.at(i));
         }
     }
 };

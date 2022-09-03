@@ -31,3 +31,16 @@ TEST(ADCArray, InsertionAndRetrieval) {
         EXPECT_EQ(array.GetValue(pair.first), pair.second);
     }
 }
+
+TEST(ADCArray, Bytes) {
+    const size_t resolution = 4;
+    const size_t size = 10;
+
+    const auto array = ADCArray<resolution, size>({4, 2, 1, 3, 2, 1, 10, 8, 4, 2});
+    EXPECT_EQ(array.GetValue(0), 4);
+
+    const auto bytes = array.ToBytes();
+
+    const auto arrayFromBytes = ADCArray<resolution, size>::FromBytes(bytes);
+    EXPECT_EQ(arrayFromBytes.GetValue(0), 4);
+}
