@@ -7,6 +7,14 @@
 
 using namespace std;
 
+TEST(ADCArray, Info) {
+    const size_t size = 100;
+    auto array = ADCArray<12, size>();
+    EXPECT_EQ(array.size(), size);
+    EXPECT_EQ(array.GetRange().first, 0);
+    EXPECT_EQ(array.GetRange().second, 4095);
+}
+
 TEST(ADCArray, InsertionAndRetrieval) {
     auto array = ADCArray<4, 100>();
 
