@@ -77,4 +77,8 @@ public:
             Insert(i, values.at(i));
         }
     }
+
+    ADCArray(const ADCArray& array) {
+        data = array.data;
+    }
 };
