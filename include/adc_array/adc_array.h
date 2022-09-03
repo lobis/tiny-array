@@ -1,7 +1,6 @@
 #pragma once
 
 #include <bitset>
-#include <vector>
 
 template<std::size_t ResolutionInNumberOfBits = 12, std::size_t NumberOfElements = 512>
 class ADCArray {
@@ -21,7 +20,7 @@ public:
         return {0, max - 1};
     }
 
-    inline unsigned int GetValue(size_t position) const {
+    inline unsigned int at(size_t position) const {
         assert(position < size());
         unsigned int result = 0;
         unsigned int powerOf2 = 1;
@@ -37,12 +36,12 @@ public:
     inline std::array<unsigned int, NumberOfElements> GetValues() const {
         std::array<unsigned int, NumberOfElements> result{};
         for (size_t i = 0; i < size(); i++) {
-            result[i] = GetValue(i);
+            result[i] = at(i);
         }
         return result;
     }
 
-    inline void Insert(size_t position, unsigned int value) {
+    inline void insert(size_t position, unsigned int value) {
         assert(position < size());
         assert(value <= GetRange().second);
         for (size_t i = 0; i < ResolutionInNumberOfBits; i++) {
@@ -74,7 +73,7 @@ public:
     // Other constructors
     ADCArray(const std::array<unsigned int, size()>& values) {
         for (size_t i = 0; i < values.size(); i++) {
-            Insert(i, values.at(i));
+            insert(i, values.at(i));
         }
     }
 

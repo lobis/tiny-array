@@ -22,13 +22,13 @@ TEST(ADCArray, InsertionAndRetrieval) {
     vector<pair<size_t, size_t>> positionValueList = {{0, 3}, {3, 5}, {1, 11}, {2, 15}};
 
     for (const auto& pair: positionValueList) {
-        EXPECT_EQ(array.GetValue(pair.first), 0);
-        array.Insert(pair.first, pair.second);
-        EXPECT_EQ(array.GetValue(pair.first), pair.second);
+        EXPECT_EQ(array.at(pair.first), 0);
+        array.insert(pair.first, pair.second);
+        EXPECT_EQ(array.at(pair.first), pair.second);
     }
 
     for (const auto& pair: positionValueList) {
-        EXPECT_EQ(array.GetValue(pair.first), pair.second);
+        EXPECT_EQ(array.at(pair.first), pair.second);
     }
 }
 
@@ -43,7 +43,7 @@ TEST(ADCArray, ToArray) {
     const auto arrayData = array.GetValues();
     EXPECT_EQ(arrayData.size(), size);
     for (size_t i = 0; i < size; i++) {
-        EXPECT_EQ(arrayData.at(i), array.GetValue(i));
+        EXPECT_EQ(arrayData.at(i), array.at(i));
     }
 }
 
@@ -56,7 +56,7 @@ TEST(ADCArray, Bytes) {
     const auto array = ADCArray<resolution, size>(data);
 
     for (size_t i = 0; i < size; i++) {
-        EXPECT_EQ(array.GetValue(i), data.at(i));
+        EXPECT_EQ(array.at(i), data.at(i));
     }
 
     const auto bytes = array.ToBytes();
@@ -64,6 +64,6 @@ TEST(ADCArray, Bytes) {
     const auto arrayFromBytes = ADCArray<resolution, size>::FromBytes(bytes);
 
     for (size_t i = 0; i < size; i++) {
-        EXPECT_EQ(arrayFromBytes.GetValue(i), data.at(i));
+        EXPECT_EQ(arrayFromBytes.at(i), data.at(i));
     }
 }
