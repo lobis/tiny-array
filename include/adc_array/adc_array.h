@@ -34,10 +34,10 @@ public:
         return result;
     }
 
-    inline std::vector<unsigned int> GetValues() const {
-        std::vector<unsigned int> result;
+    inline std::array<unsigned int, NumberOfElements> GetValues() const {
+        std::array<unsigned int, NumberOfElements> result{};
         for (size_t i = 0; i < size(); i++) {
-            result.push_back(GetValue(i));
+            result[i] = GetValue(i);
         }
         return result;
     }

@@ -32,15 +32,38 @@ TEST(ADCArray, InsertionAndRetrieval) {
     }
 }
 
-TEST(ADCArray, Bytes) {
-    const size_t resolution = 4;
+TEST(ADCArray, ToArray) {
+    const size_t resolution = 5;
     const size_t size = 10;
 
-    const auto array = ADCArray<resolution, size>({4, 2, 1, 3, 2, 1, 10, 8, 4, 2});
-    EXPECT_EQ(array.GetValue(0), 4);
+    array<unsigned int, size> data = {4, 2, 1, 5, 2, 1, 15, 8, 22, 2};
+
+    const auto array = ADCArray<resolution, size>(data);
+
+    const auto arrayData = array.GetValues();
+    EXPECT_EQ(arrayData.size(), size);
+    for (size_t i = 0; i < size; i++) {
+        EXPECT_EQ(arrayData.at(i), array.GetValue(i));
+    }
+}
+
+TEST(ADCArray, Bytes) {
+    const size_t resolution = 4;
+    const size_t size = 20;
+
+    array<unsigned int, size> data = {4, 2, 1, 3, 2, 1, 10, 8, 4, 2, 2, 1, 2, 1, 1, 11, 2, 3, 12, 10};
+
+    const auto array = ADCArray<resolution, size>(data);
+
+    for (size_t i = 0; i < size; i++) {
+        EXPECT_EQ(array.GetValue(i), data.at(i));
+    }
 
     const auto bytes = array.ToBytes();
 
     const auto arrayFromBytes = ADCArray<resolution, size>::FromBytes(bytes);
-    EXPECT_EQ(arrayFromBytes.GetValue(0), 4);
+
+    for (size_t i = 0; i < size; i++) {
+        EXPECT_EQ(arrayFromBytes.GetValue(i), data.at(i));
+    }
 }
