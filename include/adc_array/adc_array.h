@@ -1,7 +1,6 @@
 #pragma once
 
 #include <bitset>
-#include <cmath>
 #include <iostream>
 #include <vector>
 
@@ -12,7 +11,13 @@ private:
 
 public:
     inline constexpr std::size_t size() const { return NumberOfElements; }
-    inline constexpr std::pair<std::size_t, std::size_t> GetRange() const { return {0, pow(2, ResolutionInNumberOfBits) - 1}; }
+    inline constexpr std::pair<std::size_t, std::size_t> GetRange() const {
+        unsigned int max = 1;
+        for (std::size_t i = 0; i < ResolutionInNumberOfBits; i++) {
+            max *= 2;
+        }
+        return {0, max - 1};
+    }
 
     inline unsigned int Get(size_t position) const {
         assert(position < size());
