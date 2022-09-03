@@ -10,7 +10,8 @@ private:
 
 public:
     inline constexpr std::size_t size() const { return NumberOfElements; }
-    inline constexpr std::pair<std::size_t, std::size_t> GetRange() const {
+
+    inline constexpr static std::pair<std::size_t, std::size_t> GetRange() {
         unsigned int max = 1;
         for (std::size_t i = 0; i < ResolutionInNumberOfBits; i++) {
             max *= 2;
@@ -18,7 +19,7 @@ public:
         return {0, max - 1};
     }
 
-    inline unsigned int Get(size_t position) const {
+    inline unsigned int GetValue(size_t position) const {
         assert(position < size());
         unsigned int result = 0;
         unsigned int powerOf2 = 1;
@@ -34,7 +35,7 @@ public:
     inline std::vector<unsigned int> GetValues() const {
         std::vector<unsigned int> result;
         for (size_t i = 0; i < size(); i++) {
-            result.push_back(Get(i));
+            result.push_back(GetValue(i));
         }
         return result;
     }

@@ -22,12 +22,12 @@ TEST(ADCArray, InsertionAndRetrieval) {
     vector<pair<size_t, size_t>> positionValueList = {{0, 3}, {3, 5}, {1, 11}, {2, 15}};
 
     for (const auto& pair: positionValueList) {
-        EXPECT_EQ(array.Get(pair.first), 0);
+        EXPECT_EQ(array.GetValue(pair.first), 0);
         array.Insert(pair.first, pair.second);
-        EXPECT_EQ(array.Get(pair.first), pair.second);
+        EXPECT_EQ(array.GetValue(pair.first), pair.second);
     }
 
     for (const auto& pair: positionValueList) {
-        EXPECT_EQ(array.Get(pair.first), pair.second);
+        EXPECT_EQ(array.GetValue(pair.first), pair.second);
     }
 }
