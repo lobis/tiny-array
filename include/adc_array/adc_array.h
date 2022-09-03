@@ -8,7 +8,7 @@ private:
     std::bitset<ResolutionInNumberOfBits * NumberOfElements> data;
 
 public:
-    ADCArray() = default;
+    inline constexpr ADCArray() = default;
 
     inline constexpr static std::size_t size() { return NumberOfElements; }
 
@@ -20,7 +20,7 @@ public:
         return {0, max - 1};
     }
 
-    inline unsigned int at(size_t position) const {
+    inline constexpr unsigned int at(size_t position) const {
         assert(position < size());
         unsigned int result = 0;
         unsigned int powerOf2 = 1;
@@ -33,7 +33,7 @@ public:
         return result;
     }
 
-    inline std::array<unsigned int, NumberOfElements> GetValues() const {
+    inline constexpr std::array<unsigned int, NumberOfElements> GetValues() const {
         std::array<unsigned int, NumberOfElements> result{};
         for (size_t i = 0; i < size(); i++) {
             result[i] = at(i);
@@ -41,7 +41,7 @@ public:
         return result;
     }
 
-    inline void insert(size_t position, unsigned int value) {
+    inline constexpr void insert(size_t position, unsigned int value) {
         assert(position < size());
         assert(value <= GetRange().second);
         for (size_t i = 0; i < ResolutionInNumberOfBits; i++) {
@@ -50,17 +50,17 @@ public:
         }
     }
 
-    bool operator==(const ADCArray& rhs) const {
+    inline constexpr bool operator==(const ADCArray& rhs) const {
         return data == rhs.data;
     }
 
-    bool operator!=(const ADCArray& rhs) const {
+    inline constexpr bool operator!=(const ADCArray& rhs) const {
         return !(*this == rhs);
     }
 
     // Serialization
     using byte = unsigned char;
-    inline std::array<byte, sizeof(data)> ToBytes() const {
+    inline constexpr std::array<byte, sizeof(data)> ToBytes() const {
         std::array<byte, sizeof(data)> bytes;
 
         const byte* begin = reinterpret_cast<const byte*>(std::addressof(data));
@@ -69,7 +69,7 @@ public:
         return bytes;
     }
 
-    ADCArray<ResolutionInNumberOfBits, NumberOfElements> static FromBytes(const std::array<byte, sizeof(data)>& bytes) {
+    inline constexpr ADCArray<ResolutionInNumberOfBits, NumberOfElements> static FromBytes(const std::array<byte, sizeof(data)>& bytes) {
         auto array = ADCArray<ResolutionInNumberOfBits, NumberOfElements>();
 
         byte* begin = reinterpret_cast<byte*>(std::addressof(array.data));
@@ -79,13 +79,13 @@ public:
     }
 
     // Other constructors
-    ADCArray(const std::array<unsigned int, size()>& values) {
+    inline constexpr ADCArray(const std::array<unsigned int, size()>& values) {
         for (size_t i = 0; i < values.size(); i++) {
             insert(i, values.at(i));
         }
     }
 
-    ADCArray(const ADCArray& array) {
+    inline constexpr ADCArray(const ADCArray& array) {
         data = array.data;
     }
 };
