@@ -13,23 +13,25 @@ public:
     inline constexpr static std::size_t size() { return NumberOfElements; }
 
     inline constexpr static std::pair<std::size_t, std::size_t> GetRange() {
-        unsigned int max = 1;
-        for (std::size_t i = 0; i < ResolutionInNumberOfBits; i++) {
-            max *= 2;
-        }
-        return {0, max - 1};
+        return {0, (1 << ResolutionInNumberOfBits) - 1};
     }
 
     inline constexpr unsigned int at(size_t position) const {
-        assert(position < size());
-        unsigned int result = 0;
-        unsigned int powerOf2 = 1;
-        for (size_t i = 0; i < ResolutionInNumberOfBits; i++) {
-            if (data[position * ResolutionInNumberOfBits + i]) {
-                result += powerOf2;
-            }
-            powerOf2 *= 2;
+        if (position >= size()) {
+            throw std::out_of_range("Index out of range");
         }
+
+        // Calculate the starting bit index for the element at the given position
+        size_t startBit = position * ResolutionInNumberOfBits;
+
+        // Extract the bits corresponding to the value
+        unsigned int result = 0;
+        for (size_t i = 0; i < ResolutionInNumberOfBits; ++i) {
+            if (data[startBit + i]) {
+                result |= (1U << i);
+            }
+        }
+
         return result;
     }
 
@@ -55,7 +57,7 @@ public:
     }
 
     inline constexpr bool operator!=(const TinyArray& rhs) const {
-        return !(*this == rhs);
+        return *this != rhs;
     }
 
     // Serialization
@@ -79,7 +81,7 @@ public:
     }
 
     // Other constructors
-    inline constexpr TinyArray(const std::array<unsigned int, size()>& values) {
+    inline constexpr explicit TinyArray(const std::array<unsigned int, size()>& values) {
         for (size_t i = 0; i < values.size(); i++) {
             insert(i, values.at(i));
         }
