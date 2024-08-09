@@ -37,14 +37,6 @@ public:
         return result;
     }
 
-    inline constexpr std::array<number_type, NumberOfElements> GetValues() const {
-        std::array<number_type, NumberOfElements> result{};
-        for (size_t i = 0; i < size(); i++) {
-            result[i] = at(i);
-        }
-        return result;
-    }
-
     inline constexpr void insert(size_t position, number_type value) {
         if (position >= size()) {
             throw std::out_of_range("Index out of range");

@@ -41,9 +41,8 @@ TEST(TinyArray, ToArray) {
 
     const auto array = TinyArray<resolution, size>(data);
 
-    const auto arrayData = array.GetValues();
-    EXPECT_EQ(arrayData.size(), size);
+    EXPECT_EQ(array.size(), data.size());
     for (size_t i = 0; i < size; i++) {
-        EXPECT_EQ(arrayData.at(i), array.at(i));
+        EXPECT_EQ(data.at(i), array.at(i));
     }
 }
