@@ -1,6 +1,7 @@
 #pragma once
 
 #include <bitset>
+#include <initializer_list>
 
 namespace tiny_array {
 
@@ -43,10 +44,10 @@ public:
 
     inline constexpr void insert(size_t position, number_type value) {
         if (position >= size()) {
-            throw std::out_of_range("Index out of range");
+            throw std::out_of_range("Index " + std::to_string(position) + " out of range for size " + std::to_string(size()));
         }
         if (value > range().second) {
-            throw std::out_of_range("Value out of range");
+            throw std::out_of_range("Value " + std::to_string(value) + " out of range for resolution " + std::to_string(ResolutionInNumberOfBits) + " bits. Max value is " + std::to_string(range().second));
         }
 
         size_t startBit = position * ResolutionInNumberOfBits;
@@ -69,6 +70,17 @@ public:
         size_t i = 0;
         for (auto it = values.begin(); it != values.end() && i < size(); ++it, ++i) {
             insert(i, *it);
+        }
+    }
+
+    // Constructor to initialize from an initializer list
+    inline constexpr TinyArray(std::initializer_list<number_type> values) {
+        if (values.size() > size()) {
+            throw std::out_of_range("Initializer list size exceeds the number of elements in the array");
+        }
+        size_t i = 0;
+        for (auto value : values) {
+            insert(i++, value);
         }
     }
 

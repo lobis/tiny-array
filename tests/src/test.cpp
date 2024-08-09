@@ -61,3 +61,7 @@ TEST(TinyArray, ToArray) {
         EXPECT_EQ(data.at(i), array.at(i));
     }
 }
+
+TEST(TinyArray, InitializerList){
+    auto array = TinyArray<4, 10>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+}
