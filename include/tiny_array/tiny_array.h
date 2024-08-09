@@ -4,7 +4,7 @@
 
 namespace tiny_array {
 
-template<unsigned short ResolutionInNumberOfBits = 12, std::size_t NumberOfElements = 512>
+template<unsigned short ResolutionInNumberOfBits, std::size_t NumberOfElements>
 class TinyArray {
     static_assert(ResolutionInNumberOfBits <= sizeof(unsigned long long) * 8,
                   "ResolutionInNumberOfBits exceeds the number of bits available in unsigned long long");
