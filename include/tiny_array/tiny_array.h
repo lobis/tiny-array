@@ -5,7 +5,8 @@
 
 namespace tiny_array {
 
-template<unsigned short ResolutionInNumberOfBits, std::size_t NumberOfElements>
+using resolution_type = unsigned short;
+template<resolution_type ResolutionInNumberOfBits, std::size_t NumberOfElements>
 class TinyArray {
     using number_type = unsigned long long;
     static_assert(ResolutionInNumberOfBits <= sizeof(number_type) * 8,
@@ -79,7 +80,7 @@ public:
             throw std::out_of_range("Initializer list size exceeds the number of elements in the array");
         }
         size_t i = 0;
-        for (auto value : values) {
+        for (auto value: values) {
             insert(i++, value);
         }
     }
@@ -133,5 +134,11 @@ public:
         return Iterator(this, size());
     }
 };
+
+// method to create an array without explicitly specifying the number of elements - https://stackoverflow.com/questions/26351587/how-to-create-stdarray-with-initialization-list-without-providing-size-directl
+template<resolution_type resolution, typename... N>
+auto make_array(N&&... args) -> TinyArray<resolution, sizeof...(args)> {
+    return {std::forward<N>(args)...};
+}
 
 } // namespace tiny_array
