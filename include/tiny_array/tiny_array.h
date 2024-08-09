@@ -74,6 +74,10 @@ public:
         }
     }
 
+    inline constexpr number_type operator[](size_t position) const {
+        return at(position);
+    }
+
     // Constructor to initialize from an initializer list
     inline constexpr TinyArray(std::initializer_list<number_type> values) {
         if (values.size() > size()) {
