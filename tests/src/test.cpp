@@ -34,6 +34,20 @@ TEST(TinyArray, InsertionAndRetrieval) {
     }
 }
 
+TEST(TinyArray, RangeBasedForLoop) {
+    const size_t resolution = 5;
+    const size_t size = 20;
+
+    array<unsigned int, size> data = {4, 2, 1, 3, 2, 1, 10, 8, 4, 2, 2, 1, 2, 1, 1, 11, 2, 3, 12, 10};
+
+    const auto array = TinyArray<resolution, size>(data);
+
+    int i = 0;
+    for (const auto& value: array) {
+        EXPECT_EQ(value, data.at(i++));
+    }
+}
+
 TEST(TinyArray, ToArray) {
     const size_t resolution = 5;
     const size_t size = 20;

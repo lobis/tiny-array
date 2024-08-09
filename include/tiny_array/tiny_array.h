@@ -20,7 +20,7 @@ public:
     inline constexpr static std::size_t size() { return NumberOfElements; }
 
     inline constexpr static std::pair<std::size_t, std::size_t> range() {
-        return {0, (1 << ResolutionInNumberOfBits) - 1};
+        return {0, (1ULL << ResolutionInNumberOfBits) - 1};
     }
 
     inline constexpr number_type at(size_t position) const {
@@ -61,7 +61,7 @@ public:
     }
 
     inline constexpr bool operator!=(const TinyArray& rhs) const {
-        return *this != rhs;
+        return !(*this == rhs);
     }
 
     // Initialize from an iterable
@@ -76,6 +76,50 @@ public:
     // Copy constructor
     inline constexpr TinyArray(const TinyArray& array) {
         data = array.data;
+    }
+
+    class Iterator {
+    private:
+        const TinyArray* array;
+        std::size_t position;
+
+    public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type = number_type;
+        using difference_type = std::ptrdiff_t;
+        using pointer = const number_type*;
+        using reference = number_type;
+
+        Iterator(const TinyArray* arr, std::size_t pos) : array(arr), position(pos) {}
+
+        // Dereference operator
+        number_type operator*() const {
+            return array->at(position);
+        }
+
+        // Increment operator
+        Iterator& operator++() {
+            ++position;
+            return *this;
+        }
+
+        // Equality operator
+        bool operator==(const Iterator& other) const {
+            return position == other.position;
+        }
+
+        // Inequality operator
+        bool operator!=(const Iterator& other) const {
+            return position != other.position;
+        }
+    };
+
+    inline constexpr Iterator begin() const {
+        return Iterator(this, 0);
+    }
+
+    inline constexpr Iterator end() const {
+        return Iterator(this, size());
     }
 };
 
