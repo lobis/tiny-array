@@ -3,12 +3,12 @@
 #include <bitset>
 
 template<std::size_t ResolutionInNumberOfBits = 12, std::size_t NumberOfElements = 512>
-class ADCArray {
+class TinyArray {
 private:
     std::bitset<ResolutionInNumberOfBits * NumberOfElements> data;
 
 public:
-    inline constexpr ADCArray() = default;
+    inline constexpr TinyArray() = default;
 
     inline constexpr static std::size_t size() { return NumberOfElements; }
 
@@ -50,11 +50,11 @@ public:
         }
     }
 
-    inline constexpr bool operator==(const ADCArray& rhs) const {
+    inline constexpr bool operator==(const TinyArray& rhs) const {
         return data == rhs.data;
     }
 
-    inline constexpr bool operator!=(const ADCArray& rhs) const {
+    inline constexpr bool operator!=(const TinyArray& rhs) const {
         return !(*this == rhs);
     }
 
@@ -69,8 +69,8 @@ public:
         return bytes;
     }
 
-    inline constexpr ADCArray<ResolutionInNumberOfBits, NumberOfElements> static FromBytes(const std::array<byte, sizeof(data)>& bytes) {
-        auto array = ADCArray<ResolutionInNumberOfBits, NumberOfElements>();
+    inline constexpr TinyArray<ResolutionInNumberOfBits, NumberOfElements> static FromBytes(const std::array<byte, sizeof(data)>& bytes) {
+        auto array = TinyArray<ResolutionInNumberOfBits, NumberOfElements>();
 
         byte* begin = reinterpret_cast<byte*>(std::addressof(array.data));
         std::copy(std::begin(bytes), std::end(bytes), begin);
@@ -79,13 +79,13 @@ public:
     }
 
     // Other constructors
-    inline constexpr ADCArray(const std::array<unsigned int, size()>& values) {
+    inline constexpr TinyArray(const std::array<unsigned int, size()>& values) {
         for (size_t i = 0; i < values.size(); i++) {
             insert(i, values.at(i));
         }
     }
 
-    inline constexpr ADCArray(const ADCArray& array) {
+    inline constexpr TinyArray(const TinyArray& array) {
         data = array.data;
     }
 };
