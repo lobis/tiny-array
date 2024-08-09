@@ -10,5 +10,5 @@ add_library(${PROJECT_NAME} INTERFACE)
 
 target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-# TODO: Add optional skipping of tests (Note: I don't think this is needed since it's a header-only library)
+# Note: Maybe add optional skipping of tests. I don't think this is needed since it's a header-only library
 add_subdirectory(tests)

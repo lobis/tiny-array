@@ -5,6 +5,8 @@
 template<std::size_t ResolutionInNumberOfBits = 12, std::size_t NumberOfElements = 512>
 class TinyArray {
 private:
+    typedef unsigned long long number_type;
+
     std::bitset<ResolutionInNumberOfBits * NumberOfElements> data;
 
 public:
@@ -16,7 +18,7 @@ public:
         return {0, (1 << ResolutionInNumberOfBits) - 1};
     }
 
-    inline constexpr unsigned int at(size_t position) const {
+    inline constexpr number_type at(size_t position) const {
         if (position >= size()) {
             throw std::out_of_range("Index out of range");
         }
@@ -25,7 +27,7 @@ public:
         size_t startBit = position * ResolutionInNumberOfBits;
 
         // Extract the bits corresponding to the value
-        unsigned int result = 0;
+        number_type result = 0;
         for (size_t i = 0; i < ResolutionInNumberOfBits; ++i) {
             if (data[startBit + i]) {
                 result |= (1U << i);
@@ -35,15 +37,15 @@ public:
         return result;
     }
 
-    inline constexpr std::array<unsigned int, NumberOfElements> GetValues() const {
-        std::array<unsigned int, NumberOfElements> result{};
+    inline constexpr std::array<number_type, NumberOfElements> GetValues() const {
+        std::array<number_type, NumberOfElements> result{};
         for (size_t i = 0; i < size(); i++) {
             result[i] = at(i);
         }
         return result;
     }
 
-    inline constexpr void insert(size_t position, unsigned int value) {
+    inline constexpr void insert(size_t position, number_type value) {
         if (position >= size()) {
             throw std::out_of_range("Index out of range");
         }
