@@ -2,6 +2,8 @@
 
 #include <bitset>
 
+namespace tiny_array {
+
 template<std::size_t ResolutionInNumberOfBits = 12, std::size_t NumberOfElements = 512>
 class TinyArray {
 private:
@@ -73,3 +75,5 @@ public:
         data = array.data;
     }
 };
+
+} // namespace tiny_array

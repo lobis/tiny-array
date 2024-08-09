@@ -7,6 +7,7 @@
 #include <iostream>
 
 using namespace std;
+using namespace tiny_array;
 
 TEST(TinyArray, Info) {
     const size_t size = 100;
