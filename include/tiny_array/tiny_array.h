@@ -12,7 +12,7 @@ public:
 
     inline constexpr static std::size_t size() { return NumberOfElements; }
 
-    inline constexpr static std::pair<std::size_t, std::size_t> GetRange() {
+    inline constexpr static std::pair<std::size_t, std::size_t> range() {
         return {0, (1 << ResolutionInNumberOfBits) - 1};
     }
 
@@ -44,11 +44,16 @@ public:
     }
 
     inline constexpr void insert(size_t position, unsigned int value) {
-        assert(position < size());
-        assert(value <= GetRange().second);
+        if (position >= size()) {
+            throw std::out_of_range("Index out of range");
+        }
+        if (value > range().second) {
+            throw std::out_of_range("Value out of range");
+        }
+
+        size_t startBit = position * ResolutionInNumberOfBits;
         for (size_t i = 0; i < ResolutionInNumberOfBits; i++) {
-            data[position * ResolutionInNumberOfBits + i] = value % 2;
-            value /= 2;
+            data[startBit + i] = (value >> i) & 1U;
         }
     }
 
@@ -80,13 +85,16 @@ public:
         return array;
     }
 
-    // Other constructors
-    inline constexpr explicit TinyArray(const std::array<unsigned int, size()>& values) {
-        for (size_t i = 0; i < values.size(); i++) {
-            insert(i, values.at(i));
+    // Initialize from an iterable
+    template <typename Iterable>
+    inline constexpr explicit TinyArray(const Iterable& values) {
+        size_t i = 0;
+        for (auto it = values.begin(); it != values.end() && i < size(); ++it, ++i) {
+            insert(i, *it);
         }
     }
 
+    // Copy constructor
     inline constexpr TinyArray(const TinyArray& array) {
         data = array.data;
     }

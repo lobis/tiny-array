@@ -12,8 +12,8 @@ TEST(TinyArray, Info) {
     const size_t size = 100;
     auto array = TinyArray<12, size>();
     EXPECT_EQ(array.size(), size);
-    EXPECT_EQ(array.GetRange().first, 0);
-    EXPECT_EQ(array.GetRange().second, 4095);
+    EXPECT_EQ(array.range().first, 0);
+    EXPECT_EQ(array.range().second, 4095);
 }
 
 TEST(TinyArray, InsertionAndRetrieval) {
