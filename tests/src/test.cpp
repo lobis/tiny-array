@@ -35,9 +35,9 @@ TEST(TinyArray, InsertionAndRetrieval) {
 
 TEST(TinyArray, ToArray) {
     const size_t resolution = 5;
-    const size_t size = 10;
+    const size_t size = 20;
 
-    array<unsigned int, size> data = {4, 2, 1, 5, 2, 1, 15, 8, 22, 2};
+    array<unsigned int, size> data = {4, 2, 1, 3, 2, 1, 10, 8, 4, 2, 2, 1, 2, 1, 1, 11, 2, 3, 12, 10};
 
     const auto array = TinyArray<resolution, size>(data);
 
@@ -46,30 +46,4 @@ TEST(TinyArray, ToArray) {
     for (size_t i = 0; i < size; i++) {
         EXPECT_EQ(arrayData.at(i), array.at(i));
     }
-}
-
-TEST(TinyArray, Bytes) {
-    const size_t resolution = 4;
-    const size_t size = 20;
-
-    array<unsigned int, size> data = {4, 2, 1, 3, 2, 1, 10, 8, 4, 2, 2, 1, 2, 1, 1, 11, 2, 3, 12, 10};
-
-    const auto array = TinyArray<resolution, size>(data);
-
-    for (size_t i = 0; i < size; i++) {
-        EXPECT_EQ(array.at(i), data.at(i));
-    }
-
-    const auto bytes = array.ToBytes();
-
-    const auto arrayFromBytes = TinyArray<resolution, size>::FromBytes(bytes);
-
-    for (size_t i = 0; i < size; i++) {
-        EXPECT_EQ(arrayFromBytes.at(i), data.at(i));
-    }
-
-    // Check operator == works
-    EXPECT_EQ(array, arrayFromBytes);
-    const auto arrayEmpty = TinyArray<resolution, size>();
-    EXPECT_TRUE(array != arrayEmpty);
 }

@@ -65,28 +65,8 @@ public:
         return *this != rhs;
     }
 
-    // Serialization
-    using byte = unsigned char;
-    inline constexpr std::array<byte, sizeof(data)> ToBytes() const {
-        std::array<byte, sizeof(data)> bytes;
-
-        const byte* begin = reinterpret_cast<const byte*>(std::addressof(data));
-        std::copy(begin, begin + sizeof(data), std::begin(bytes));
-
-        return bytes;
-    }
-
-    inline constexpr TinyArray<ResolutionInNumberOfBits, NumberOfElements> static FromBytes(const std::array<byte, sizeof(data)>& bytes) {
-        auto array = TinyArray<ResolutionInNumberOfBits, NumberOfElements>();
-
-        byte* begin = reinterpret_cast<byte*>(std::addressof(array.data));
-        std::copy(std::begin(bytes), std::end(bytes), begin);
-
-        return array;
-    }
-
     // Initialize from an iterable
-    template <typename Iterable>
+    template<typename Iterable>
     inline constexpr explicit TinyArray(const Iterable& values) {
         size_t i = 0;
         for (auto it = values.begin(); it != values.end() && i < size(); ++it, ++i) {
