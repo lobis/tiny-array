@@ -69,3 +69,24 @@ TEST(TinyArray, InitializerList) {
 TEST(TinyArray, make_array) {
     make_array<4>(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 }
+
+TEST(TinyArray, SizeComparison) {
+    const size_t resolution = 14;
+    const size_t size = 10000;
+    using number_type = uint32_t;
+
+    vector<number_type> data(size, 0);
+    for (size_t i = 0; i < data.size(); i++) {
+        data[i] = i;
+    }
+
+    const auto vector_size = sizeof(number_type) * data.size() + sizeof(data);
+
+    const auto array = TinyArray<resolution, size>(data);
+
+    const auto array_size = sizeof(array);
+
+    EXPECT_LT(array_size, vector_size);
+    EXPECT_EQ(vector_size, 40024);
+    EXPECT_EQ(array_size, 17504);
+}
