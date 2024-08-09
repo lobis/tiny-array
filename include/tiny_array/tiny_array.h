@@ -6,12 +6,11 @@ namespace tiny_array {
 
 template<unsigned short ResolutionInNumberOfBits, std::size_t NumberOfElements>
 class TinyArray {
-    static_assert(ResolutionInNumberOfBits <= sizeof(unsigned long long) * 8,
+    using number_type = unsigned long long;
+    static_assert(ResolutionInNumberOfBits <= sizeof(number_type) * 8,
                   "ResolutionInNumberOfBits exceeds the number of bits available in unsigned long long");
 
 private:
-    typedef unsigned long long number_type;
-
     std::bitset<ResolutionInNumberOfBits * NumberOfElements> data;
 
 public:
