@@ -65,7 +65,7 @@ TEST(TinyArray, ToArray) {
 }
 
 TEST(TinyArray, InitializerList) {
-    TinyArray<4, 10>({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    TinyArray<4, 10>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 }
 
 TEST(TinyArray, make_array) {

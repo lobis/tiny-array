@@ -101,7 +101,7 @@ public:
         InitializeFromInitializerList(values);
     }
 
-    // Explicitly initialize from an initializer list of integers to avoid warnings
+    // Explicitly initialize from an initializer list of integers to avoid warnings when using make_array `make_array<4>(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);`
     inline constexpr TinyArray(std::initializer_list<int> values) {
         InitializeFromInitializerList(values);
     }
@@ -117,12 +117,6 @@ public:
         std::size_t position;
 
     public:
-        using iterator_category = std::forward_iterator_tag;
-        using value_type = number_type;
-        using difference_type = std::ptrdiff_t;
-        using pointer = const number_type*;
-        using reference = number_type;
-
         Iterator(const TinyArray* arr, std::size_t pos) : array(arr), position(pos) {}
 
         // Dereference operator
