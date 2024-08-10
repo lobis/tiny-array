@@ -17,4 +17,4 @@ FetchContent_MakeAvailable(TinyArray)
 
 add_executable(${PROJECT_NAME} main.cpp)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE tiny_array)
+target_link_libraries(${PROJECT_NAME} PRIVATE tiny_array::tiny_array)
