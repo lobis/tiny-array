@@ -26,6 +26,10 @@ public:
         return {0, (1ULL << ResolutionInNumberOfBits) - 1};
     }
 
+    inline void clear() {
+        data.reset();
+    }
+
     inline constexpr number_type at(size_t position) const {
         if (position >= size()) {
             throw std::out_of_range("Index out of range");
@@ -109,6 +113,27 @@ public:
     // Copy constructor
     inline constexpr TinyArray(const TinyArray& array) {
         data = array.data;
+    }
+
+    // Serialization
+    void serialize(std::ostream& out) const {
+        for (size_t i = 0; i < data.size(); i += 8) {
+            unsigned char byte = 0;
+            for (size_t j = 0; j < 8; ++j) {
+                byte |= (data[i + j] << j);
+            }
+            out.write(reinterpret_cast<const char*>(&byte), sizeof(byte));
+        }
+    }
+
+    void deserialize(std::istream& in) {
+        for (size_t i = 0; i < data.size(); i += 8) {
+            unsigned char byte;
+            in.read(reinterpret_cast<char*>(&byte), sizeof(byte));
+            for (size_t j = 0; j < 8; ++j) {
+                data[i + j] = (byte >> j) & 1U;
+            }
+        }
     }
 
     class Iterator {

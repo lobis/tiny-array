@@ -5,6 +5,7 @@
 
 #include <array>
 #include <chrono>
+#include <fstream>
 #include <iostream>
 #include <random>
 
@@ -146,4 +147,58 @@ TEST(TinyArray, TimeBenchmark) {
     }
     auto array_write_time = chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - start).count();
     cout << "Array write time: " << array_write_time << " microseconds" << endl;
+}
+
+TEST(TinyArray, Serialization) {
+    const size_t resolution = 12;
+    const size_t size = 100001;
+    using number_type = uint32_t;
+
+    std::random_device rd;                                                      // Obtain a random seed from hardware
+    std::mt19937 gen(rd());                                                     // Mersenne Twister engine with the seed
+    std::uniform_int_distribution<number_type> dist(0, pow(2, resolution) - 1); // range 0 to 2^32 - 1
+
+    vector<number_type> data(size, 0);
+    for (unsigned int& entry: data) {
+        entry = dist(gen);
+    }
+
+    const auto array = TinyArray<resolution, size>(data);
+
+    stringstream stream;
+    array.serialize(stream);
+
+    TinyArray<resolution, size> deserialized_array;
+    deserialized_array.deserialize(stream);
+
+    for (size_t i = 0; i < size; i++) {
+        EXPECT_EQ(array.at(i), deserialized_array.at(i));
+    }
+
+    // write array to file
+    string filename = "array.bin";
+    ofstream file(filename, ios::binary);
+    array.serialize(file);
+    file.close();
+
+    // read array from file
+    deserialized_array.clear();
+    ifstream file_read(filename, ios::binary);
+    deserialized_array.deserialize(file_read);
+    file_read.close();
+
+    for (size_t i = 0; i < size; i++) {
+        EXPECT_EQ(array.at(i), deserialized_array.at(i));
+    }
+
+    // file size
+    ifstream file_size(filename, ios::binary | ios::ate);
+
+    // difference between sizes should be less than 1 byte or so
+    int file_size_bytes = file_size.tellg();
+    int array_size_bytes = sizeof(array);
+    EXPECT_LT(abs(file_size_bytes - array_size_bytes), 8);
+
+    // delete file
+    remove(filename.c_str());
 }
