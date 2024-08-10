@@ -111,8 +111,6 @@ TEST(TinyArray, TimeBenchmark) {
     auto data_tiny_array = TinyArray<resolution, size>(data);
 
     const auto vector_size = sizeof(number_type) * data.size() + sizeof(data_vector);
-
-
     const auto array_size = sizeof(data_tiny_array);
 
     auto start = chrono::high_resolution_clock::now();
@@ -148,5 +146,4 @@ TEST(TinyArray, TimeBenchmark) {
     }
     auto array_write_time = chrono::duration_cast<chrono::microseconds>(chrono::high_resolution_clock::now() - start).count();
     cout << "Array write time: " << array_write_time << " microseconds" << endl;
-
 }

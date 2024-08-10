@@ -78,15 +78,30 @@ public:
         return at(position);
     }
 
-    // Constructor to initialize from an initializer list
-    inline constexpr TinyArray(std::initializer_list<number_type> values) {
+private:
+    template<typename T>
+    inline void constexpr InitializeFromInitializerList(std::initializer_list<T> values) {
+        static_assert(std::is_convertible<T, number_type>::value, "Initializer list element type must be convertible to number_type");
+
         if (values.size() > size()) {
             throw std::out_of_range("Initializer list size exceeds the number of elements in the array");
         }
+
         size_t i = 0;
-        for (auto value: values) {
+        for (const auto value: values) {
             insert(i++, value);
         }
+    }
+
+public:
+    // Constructor to initialize from an initializer list
+    inline constexpr TinyArray(std::initializer_list<number_type> values) {
+        InitializeFromInitializerList(values);
+    }
+
+    // Explicitly initialize from an initializer list of integers to avoid warnings
+    inline constexpr TinyArray(std::initializer_list<int> values) {
+        InitializeFromInitializerList(values);
     }
 
     // Copy constructor
