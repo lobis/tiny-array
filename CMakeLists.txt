@@ -11,5 +11,9 @@ add_library(tiny_array::tiny_array ALIAS tiny_array)
 
 target_include_directories(${PROJECT_NAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-# Note: Maybe add optional skipping of tests. I don't think this is needed since it's a header-only library
-add_subdirectory(tests)
+# TinyArray_BuildTests variable is used to enable or disable tests (default is OFF)
+option(TinyArray_BuildTests "Build tests for TinyArray" OFF)
+
+if (TinyArray_BuildTests)
+    add_subdirectory(tests)
+endif ()
