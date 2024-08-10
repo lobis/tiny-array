@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release
+        run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release -DTinyArray_BuildTests=ON
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build
@@ -23,3 +23,12 @@ jobs:
       - name: Test
         working-directory: ${{github.workspace}}/build/tests
         run: ctest
+
+      - name: Build examples
+        run: | 
+          cmake -S ${{github.workspace}}/examples -B ${{github.workspace}/build-examples
+          cmake --build ${{github.workspace}}/build-examples
+
+      - name: Run examples
+        run: |
+          ${{github.workspace}}/build-examples/cmake-usage/tiny_array_examples_cmake_usage
