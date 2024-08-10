@@ -37,6 +37,11 @@ FetchContent_Declare(
     GIT_TAG main # or a specific release tag
 )
 FetchContent_MakeAvailable(TinyArray)
+# ... your project configuration
+add_executable(your_project_name main.cpp)
+# ...
+
+target_link_libraries(your_project_name PRIVATE tiny_array::tiny_array)
 ```
 
 ### Usage
