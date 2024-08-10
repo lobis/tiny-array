@@ -24,7 +24,20 @@ The main motivation of this library is to improve disk storage efficiency.
 
 ### Installation
 
-This library is header-only, so you can just copy the `include/tiny_array` folder to your project.
+This library is header-only, so you can just copy the [`include/tiny_array`](https://github.com/lobis/tiny-array/tree/main/include/tiny_array) directory to your project.
+
+Alternatively, you can use `CMake` to install the library by adding the following to your `CMakeLists.txt`:
+
+```cmake
+include(FetchContent)
+
+FetchContent_Declare(
+    TinyArray
+    GIT_REPOSITORY https://github.com/lobis/tiny-array.git
+    GIT_TAG main # or a specific release tag
+)
+FetchContent_MakeAvailable(TinyArray)
+```
 
 ### Usage
 
@@ -42,7 +55,7 @@ tinyArray.insert(2, 7);
 // values can be accessed individually
 tinyArray.at(2); // 7
 // or be iterated through
-for (const auto& value: tinyArray.GetValues()){
+for (const auto& value: tinyArray){
     // value is of type 'unsigned int'
 }
 ```
@@ -50,7 +63,7 @@ for (const auto& value: tinyArray.GetValues()){
 Memory usage vs `std::vector<unsigned short>`
 
 ```cpp
-# include "tiny_array/tiny_array.h"
+#include "tiny_array/tiny_array.h"
 
 const size_t resolutionInBits = 10;
 const size_t numberOfElements = 1000000; // 1E6
@@ -58,16 +71,15 @@ const size_t numberOfElements = 1000000; // 1E6
 auto tinyArray = TinyArray<resolutionInBits, numberOfElements>();
 
 std::srand(0);
-for (int i = 0; i < numberOfElements; ++i){
+for (int i = 0; i < numberOfElements; ++i) {
     tinyArray.insert(i, rand() % 1024);
 }
 
 sizeof(tinyArray); // 1250000 bytes
 
 auto values = std::array<unsigned short, numberOfElements>{};
-for (int i = 0; i < numberOfElements; ++i){
-    values[i] = tinyArray.at(i);
-}
+// copy values from tinyArray to an std::array
+std::copy(tinyArray.begin(), tinyArray.end(), values.begin());
 
 sizeof(values); // 2000000 bytes, 60% more memory usage
 ```

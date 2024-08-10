@@ -2,6 +2,8 @@
 
 #include <bitset>
 #include <initializer_list>
+#include <stdexcept>
+#include <utility>
 
 namespace tiny_array {
 
