@@ -14,19 +14,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Configure CMake
-        run: cmake -S ${{github.workspace}} -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release -DTinyArray_BuildTests=ON
-
       - name: Build
-        run: cmake --build ${{github.workspace}}/build
+        run: |
+          cmake -S ${{github.workspace}} -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release -DTinyArray_BuildTests=ON
+          cmake --build ${{github.workspace}}/build
 
-      - name: Test
+      - name: Run tests
         working-directory: ${{github.workspace}}/build/tests
         run: ctest
 
       - name: Build examples
-        run: | 
-          cmake -S ${{github.workspace}}/examples -B ${{github.workspace}/build-examples
+        run: |
+          cmake -S ${{github.workspace}}/examples -B ${{github.workspace}}/build-examples
           cmake --build ${{github.workspace}}/build-examples
 
       - name: Run examples
